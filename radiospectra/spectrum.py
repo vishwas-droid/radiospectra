@@ -38,9 +38,13 @@ class Spectrum(np.ndarray):
 
     def __getitem__(self, item):
         result = super().__getitem__(item)
-        if isinstance(result, Spectrum) and self.freq_axis is not None:
-            result.freq_axis = self.freq_axis[item]
-        return result
+        if isinstance(result, Spectrum):
+            if self.freq_axis is not None:
+                try:
+                    result.freq_axis = self.freq_axis[item]
+                except Exception:
+                    result.freq_axis = None
+            return result
     def plot(self, axes=None, **matplot_args):
         """
         Plot spectrum onto current axes.
